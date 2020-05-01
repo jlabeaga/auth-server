@@ -43,12 +43,12 @@ test("user5 is created successfully", async () => {
   expect(response.body.data.username).toBe("user5");
 });
 
-test.skip("user with already existing username can not be created", async () => {
+test("user with already existing username can not be created", async () => {
   const response = await request(BASE_URL)
     .post("/user")
     .set("Authorization", `Bearer ${user1.token}`)
     .send({
-      username: "user4",
+      username: "user1",
       password: "user5",
       email: "user5@hotmail.com",
     })
