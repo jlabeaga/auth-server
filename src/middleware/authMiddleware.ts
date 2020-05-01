@@ -7,6 +7,9 @@ import UserService from "../service/UserService";
 const authMiddleware: RequestHandler = (req, res, next) => {
   console.debug("invoked authMiddleware()");
   try {
+    if (process.env.MYAPP_DISABLE_CHECK_AUTH === "true") {
+      return next();
+    }
     const header = req.headers.authorization as string;
     const token = header.split(" ")[1];
     if (!token) {
