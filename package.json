@@ -1,0 +1,36 @@
+{
+  "name": "auth-server",
+  "version": "1.0.0",
+  "description": "jwt auth server",
+  "main": "index.js",
+  "scripts": {
+    "start": "setenv.bat && node ./dist/server.js",
+    "dev": "setenv.bat && nodemon ./dist/server.js --ignore ./dist/db/ --ignore ./dist/__test__/",
+    "test": "jest --runInBand"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.6",
+    "@types/jsonwebtoken": "^8.3.9",
+    "@types/lowdb": "^1.0.9",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "class-validator": "^0.12.2",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lowdb": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.2",
+    "@types/supertest": "^2.0.8",
+    "jest": "^25.5.2",
+    "nodemon": "^2.0.3",
+    "supertest": "^4.0.2",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3"
+  }
+}

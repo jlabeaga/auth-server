@@ -102,3 +102,11 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Jose: my files
+ignoreme.txt
+.vscode/
+dist/
+package-lock.json
+src/repository/UserRepository.ts.bak
+src/repository/UserRepository2.ts.bak
