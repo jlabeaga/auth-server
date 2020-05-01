@@ -36,7 +36,7 @@ function create(userBody: any): User {
   let user = new User(
     userBody.id,
     userBody.username,
-    EncryptService.hash(userBody.password),
+    userBody.password,
     userBody.email,
     userBody.role,
     userBody.enabled
