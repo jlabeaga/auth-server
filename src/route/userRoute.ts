@@ -5,9 +5,9 @@ const router = Router();
 
 router.post("/", UserController.create);
 
-router.get("/", UserController.findAll);
-
 router.get("/:id", UserController.findOne);
+
+router.get("/", UserController.findAll);
 
 router.patch("/:id", UserController.update);
 

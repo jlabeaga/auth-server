@@ -1,9 +1,10 @@
-import UserRepository from "../repository/UserRepository";
-import User from "../model/User";
 import Role from "../model/Role";
+import { getTypeormConnection } from "../orm/connection";
+import { Connection } from "typeorm";
+import { User } from "../entity/User";
 
 // db data
-const users: User[] = [
+const users = [
   {
     id: 1,
     username: "user1",
@@ -11,8 +12,6 @@ const users: User[] = [
     email: "user1@hotmail.com",
     role: Role.ADMIN,
     enabled: true,
-    createdAt: 1587899964446,
-    updatedAt: 1587899964446,
   },
   {
     id: 2,
@@ -21,8 +20,6 @@ const users: User[] = [
     email: "user2@hotmail.com",
     role: Role.USER,
     enabled: true,
-    createdAt: 1587899988715,
-    updatedAt: 1587899988715,
   },
   {
     id: 3,
@@ -31,8 +28,6 @@ const users: User[] = [
     email: "user3@hotmail.com",
     role: Role.ADMIN,
     enabled: false,
-    createdAt: 1587900008563,
-    updatedAt: 1587900008563,
   },
   {
     id: 4,
@@ -41,14 +36,35 @@ const users: User[] = [
     email: "user4@hotmail.com",
     role: Role.USER,
     enabled: false,
-    createdAt: 1587900025129,
-    updatedAt: 1587900025129,
   },
 ];
 
-function initDb() {
+async function initDb(): Promise<void> {
   console.log("initDb BEFORE");
-  UserRepository.save(users);
+  let connection: Connection;
+  try {
+    connection = await getTypeormConnection();
+
+    let result = await connection
+      .createQueryBuilder()
+      .delete()
+      .from(User)
+      .execute();
+
+    console.log("initDb: data deleted");
+
+    await connection
+      .createQueryBuilder()
+      .insert()
+      .into(User)
+      .values(users)
+      .execute();
+
+    console.log("initDb: data inserted");
+  } catch (error) {
+    console.log("error at initDb");
+    throw error;
+  }
   console.log("initDb AFTER");
 }
 

@@ -10,7 +10,7 @@ const user1 = {
   },
   password: "user1",
   token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoidXNlcjFAaG90bWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJlbmFibGVkIjp0cnVlLCJpYXQiOjE1ODgyNDQ4ODEsImV4cCI6MTYxOTgwMjQ4MX0.W93Pt8B9XB-SZBNZ882_oTOMRyE7y8wLuTz6zeWk3yM",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoidXNlcjFAaG90bWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJlbmFibGVkIjp0cnVlLCJpYXQiOjE1ODg1MTU1MTksImV4cCI6MTYyMDA3MzExOX0.GrskqcBvhHQpuHne-trYORpxIVpyKMy6hLsmANsbRKM",
 };
 
 const user2 = {

@@ -3,8 +3,9 @@ import EncryptService from "../service/EncryptService";
 import UserContent from "../model/UserContent";
 import Result from "../model/Result";
 import UserService from "../service/UserService";
+import TicketError from "../model/TicketError";
 
-const authMiddleware: RequestHandler = (req, res, next) => {
+const authMiddleware: RequestHandler = async (req, res, next) => {
   console.debug("invoked authMiddleware()");
   try {
     if (process.env.MYAPP_DISABLE_CHECK_AUTH === "true") {
@@ -17,16 +18,19 @@ const authMiddleware: RequestHandler = (req, res, next) => {
     }
     const userContent = EncryptService.verifyJwtToken(token) as UserContent;
     console.log("userContent :>> ", userContent);
-    const user = UserService.findOne(userContent.id);
+    const user = await UserService.findOne(userContent.id);
     if (!user.enabled) {
       throw new Error(`User is disabled`);
     }
     res.set("userId", "" + userContent.id);
     return next();
   } catch (err) {
-    return res
-      .status(403)
-      .json(Result.fromError("Authentication failed. " + err.message));
+    const ticketError = TicketError.fromErrorMessage(
+      "Authentication failed. " + err.message
+    );
+    console.log(ticketError);
+    ticketError.stack = "";
+    return res.status(403).json(Result.fromError(ticketError));
   }
 };
 

@@ -3,41 +3,84 @@ import { RequestHandler } from "express";
 import userService from "../service/UserService";
 import UserUtils from "../model/UserUtils";
 import Result from "../model/Result";
+import TicketErrorUtils from "../model/TicketErrorUtils";
 
-const findAll: RequestHandler = (req, res, next) => {
+const findAll: RequestHandler = async (req, res, next) => {
   console.debug("invoked findAll()");
-  const users = userService.findAll().map((user) => UserUtils.fromUser(user));
-  return res.status(200).json(Result.fromData(users));
+  try {
+    const users = (await userService.findAll()).map((user) =>
+      UserUtils.fromUser(user)
+    );
+    return res.status(200).json(Result.fromData(users));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when listing users at UserController"
+    );
+    return next(ticketError);
+  }
 };
 
-const findOne: RequestHandler<{ id: string }> = (req, res, next) => {
+const findOne: RequestHandler<{ id: string }> = async (req, res, next) => {
   console.debug("invoked findOne()");
-  const id = req.params.id;
-  const user = userService.findOne(parseInt(id));
-  const userContent = UserUtils.fromUser(user);
-  return res.status(200).json(Result.fromData(userContent));
+  try {
+    const id = req.params.id;
+    const user = await userService.findOne(parseInt(id));
+    const userContent = UserUtils.fromUser(user);
+    return res.status(200).json(Result.fromData(userContent));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when finding user at UserController"
+    );
+    return next(ticketError);
+  }
 };
 
-const create: RequestHandler = (req, res, next) => {
+const create: RequestHandler = async (req, res, next) => {
   console.debug("invoked create()");
-  const createdUser = userService.create(req.body);
-  const userContent = UserUtils.fromUser(createdUser);
-  return res.status(201).json(Result.fromData(userContent));
+  try {
+    const createdUser = await userService.create(req.body);
+    const userContent = UserUtils.fromUser(createdUser);
+    return res.status(201).json(Result.fromData(userContent));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when creating user at UserController"
+    );
+    return next(ticketError);
+  }
 };
 
-const update: RequestHandler<{ id: string }> = (req, res, next) => {
+const update: RequestHandler<{ id: string }> = async (req, res, next) => {
   console.debug("invoked update()");
-  const id = parseInt(req.params.id);
-  const updatedUser = userService.update(id, req.body);
-  const userContent = UserUtils.fromUser(updatedUser);
-  return res.status(200).json(Result.fromData(userContent));
+  try {
+    const id = parseInt(req.params.id);
+    const updatedUser = await userService.update(id, req.body);
+    const userContent = UserUtils.fromUser(updatedUser);
+    return res.status(200).json(Result.fromData(userContent));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when updating user at UserController"
+    );
+    return next(ticketError);
+  }
 };
 
-const remove: RequestHandler<{ id: string }> = (req, res, next) => {
+const remove: RequestHandler<{ id: string }> = async (req, res, next) => {
   console.debug("invoked remove()");
-  const id = req.params.id;
-  const user = userService.remove(parseInt(id));
-  return res.status(200).json(Result.fromData(`User id = ${id} removed.`));
+  try {
+    const id = req.params.id;
+    const user = await userService.remove(parseInt(id));
+    return res.status(200).json(Result.fromData(`User id = ${id} removed.`));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when deleting user at UserController"
+    );
+    return next(ticketError);
+  }
 };
 
 export default {

@@ -1,4 +1,4 @@
-import User from "./User";
+import { User } from "../entity/User";
 import UserContent from "./UserContent";
 
 function fromUser(user: User): UserContent {

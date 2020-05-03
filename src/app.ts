@@ -1,6 +1,7 @@
 import express from "express";
 import { Request, Response, NextFunction } from "express";
 import { json } from "body-parser";
+import "reflect-metadata";
 
 import testRoute from "./route/testRoute";
 import userRoute from "./route/userRoute";
@@ -49,7 +50,7 @@ app.use("/auth", loginRoute);
 app.use((req: Request, res: Response, next: NextFunction) => {
   res
     .status(404)
-    .json(Result.fromError("Could not find this route:" + req.url));
+    .json(Result.fromErrorMessage("Could not find this route:" + req.url));
 });
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
@@ -58,8 +59,10 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     console.log("headersSent");
     return next(error);
   }
-  const stack = process.env.MYAPP_DEBUG === "true" ? error.stack : "";
-  res.status(500).json(Result.fromError(error.message, stack));
+  if (process.env.MYAPP_DEBUG !== "true") {
+    error.stack = "";
+  }
+  res.status(500).json(Result.fromError(error));
 });
 
 console.log("started app");

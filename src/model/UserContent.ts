@@ -4,7 +4,7 @@ type UserContent = {
   id: number;
   username: string;
   email: string;
-  role: Role;
+  role: string;
   enabled: boolean;
 };
 

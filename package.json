@@ -6,7 +6,8 @@
   "scripts": {
     "start": "setenv.bat && node ./dist/server.js",
     "dev": "setenv.bat && nodemon ./dist/server.js --ignore ./dist/db/ --ignore ./dist/__test__/",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand --detectOpenHandles",
+    "initDb": "node ./dist/db/initDbCmd.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,7 +21,10 @@
     "class-validator": "^0.12.2",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^4.2.0",
+    "typeorm": "^0.2.24"
   },
   "devDependencies": {
     "@types/express": "^4.17.6",
