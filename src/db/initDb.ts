@@ -45,22 +45,24 @@ async function initDb(): Promise<void> {
   try {
     connection = await getTypeormConnection();
 
-    let result = await connection
-      .createQueryBuilder()
-      .delete()
-      .from(User)
-      .execute();
+    connection.transaction(async (transactionalEntityManager) => {
+      await transactionalEntityManager.connection
+        .createQueryBuilder()
+        .delete()
+        .from(User)
+        .execute();
 
-    console.log("initDb: data deleted");
+      console.log("initDb: data deleted");
 
-    await connection
-      .createQueryBuilder()
-      .insert()
-      .into(User)
-      .values(users)
-      .execute();
+      await transactionalEntityManager.connection
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values(users)
+        .execute();
 
-    console.log("initDb: data inserted");
+      console.log("initDb: data inserted");
+    });
   } catch (error) {
     console.log("error at initDb");
     throw error;
