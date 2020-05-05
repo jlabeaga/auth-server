@@ -65,10 +65,24 @@ const user5 = {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJ1c2VyNCIsImVtYWlsIjoidXNlcjRAaG90bWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImVuYWJsZWQiOmZhbHNlLCJpYXQiOjE1ODgyNDU1NjIsImV4cCI6MTYxOTgwMzE2Mn0.jdpvZAptjZtFCgOSCjwbTipaNFlF2Qhw9Ajo-ReZ-FY",
 };
 
+const user6 = {
+  userContent: {
+    id: 6,
+    username: "user6",
+    email: "user6@hotmail.com",
+    role: Role.ADMIN,
+    enabled: true,
+  },
+  password: "user6",
+  token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwidXNlcm5hbWUiOiJ1c2VyNiIsImVtYWlsIjoidXNlcjZAaG90bWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJlbmFibGVkIjp0cnVlLCJpYXQiOjE1ODg2ODE3NjgsImV4cCI6MTYyMDIzOTM2OH0.CNvRkdCk7ManVxinpZsbpUgMyiKO0DfTJbi37-yFzgI",
+};
+
 export default {
   user1,
   user2,
   user3,
   user4,
   user5,
+  user6,
 };
