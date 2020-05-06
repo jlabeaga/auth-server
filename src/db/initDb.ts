@@ -37,6 +37,14 @@ const users = [
     role: Role.USER,
     enabled: false,
   },
+  {
+    id: 5,
+    username: "user5",
+    password: "$2a$12$/7g0Iga.JvgbLq3.e6YKLOP7pRYJrdU.irnvoNLzuBtjVi4im9Wte",
+    email: "user5@hotmail.com",
+    role: Role.USER,
+    enabled: true,
+  },
 ];
 
 async function initDb(): Promise<void> {

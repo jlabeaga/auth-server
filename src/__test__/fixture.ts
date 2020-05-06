@@ -58,11 +58,11 @@ const user5 = {
     username: "user5",
     email: "user5@hotmail.com",
     role: Role.USER,
-    enabled: false,
+    enabled: true,
   },
   password: "user5",
   token:
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJ1c2VyNCIsImVtYWlsIjoidXNlcjRAaG90bWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImVuYWJsZWQiOmZhbHNlLCJpYXQiOjE1ODgyNDU1NjIsImV4cCI6MTYxOTgwMzE2Mn0.jdpvZAptjZtFCgOSCjwbTipaNFlF2Qhw9Ajo-ReZ-FY",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJ1c2VyNSIsImVtYWlsIjoidXNlcjVAaG90bWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsImVuYWJsZWQiOnRydWUsImlhdCI6MTU4ODc2NjQyNCwiZXhwIjoxNjIwMzI0MDI0fQ.cp9NGCQ70uTgGi92pO3drwwMqMZP_VKhdcIcXM_8uhk",
 };
 
 const user6 = {

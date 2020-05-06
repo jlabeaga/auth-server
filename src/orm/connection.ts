@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { createConnection, getConnection, Connection } from "typeorm";
 import { User } from "../entity/User";
 import { root } from "../paths";
+import { TokenBlacklist } from "../entity/TokenBlacklist";
 
 const dbFilePath = `${root}/dist/db/${process.env.MYAPP_DB_SQLITE_FILE}`;
 
@@ -17,7 +18,7 @@ export async function getTypeormConnection(): Promise<Connection> {
       return connection;
     }
   } catch (err) {
-    console.log("error on getConnection: ", err);
+    console.log("error on getConnection: ", err.message);
   }
   try {
     console.log("attempting createConnection");
@@ -26,7 +27,7 @@ export async function getTypeormConnection(): Promise<Connection> {
       database: dbFilePath,
       synchronize: true,
       logging: true,
-      entities: [User],
+      entities: [User, TokenBlacklist],
     });
     console.log("connection created");
     return getConnection();

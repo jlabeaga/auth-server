@@ -5,9 +5,11 @@ const router = Router();
 
 router.post("/login", LoginController.login);
 
-router.post("/logout");
+router.post("/logout/:jwtToken", LoginController.logout);
 
-router.get("/profile");
+router.get("/isRevoked/:jwtToken", LoginController.isRevoked);
+
+router.post("/purgeOldTokens", LoginController.purgeOldTokens);
 
 router.get("/verify/:jwtToken", LoginController.verify);
 

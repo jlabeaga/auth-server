@@ -3,6 +3,7 @@ import { RequestHandler } from "express";
 import UserService from "../service/UserService";
 import Result from "../model/Result";
 import TicketErrorUtils from "../model/TicketErrorUtils";
+import TokenBlacklistService from "../service/TokenBlacklistService";
 
 const login: RequestHandler = async (req, res, next) => {
   console.debug("invoked login()");
@@ -51,8 +52,59 @@ const verify: RequestHandler = async (req, res, next) => {
   }
 };
 
+const logout: RequestHandler = async (req, res, next) => {
+  console.debug("invoked logout()");
+  try {
+    const jwtToken = req.params.jwtToken;
+    await TokenBlacklistService.revoke(jwtToken);
+    return res
+      .status(200)
+      .json(Result.fromData({ message: "Token revoked successfully." }));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when revokint token at LoginController"
+    );
+    return next(ticketError);
+  }
+};
+
+const isRevoked: RequestHandler = async (req, res, next) => {
+  console.debug("invoked isRevoked()");
+  try {
+    const jwtToken = req.params.jwtToken;
+    const isRevoked = await TokenBlacklistService.isRevoked(jwtToken);
+    return res.status(200).json(Result.fromData({ isRevoked }));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when checking token revokation at LoginController"
+    );
+    return next(ticketError);
+  }
+};
+
+const purgeOldTokens: RequestHandler = async (req, res, next) => {
+  console.debug("invoked purgeOldTokens()");
+  try {
+    await TokenBlacklistService.purgeOldTokens();
+    return res
+      .status(200)
+      .json(Result.fromData({ message: "Old tokens purged." }));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when purgin old tokens at LoginController"
+    );
+    return next(ticketError);
+  }
+};
+
 export default {
   login,
   sign,
   verify,
+  logout,
+  isRevoked,
+  purgeOldTokens,
 };
