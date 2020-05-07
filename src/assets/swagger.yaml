@@ -6,6 +6,7 @@ info:
 host: localhost:7000
 # basePath prefixes all resource paths
 basePath: /api
+# in dev Swagger UI is located at: http://localhost:7000/api_docs
 tags:
   - name: "login"
     description: "Login/Logout/Register user operations"
