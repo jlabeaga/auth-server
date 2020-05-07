@@ -39,7 +39,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   // if (header("authorization"))
   //   console.log('header("authorization") = ', header("authorization"));
   // if (query) console.log("query = ", query);
-  res.set("url", `${method} ${url}`);
+  res.set("operation", `${method} ${url} ${params}`);
   next();
 });
 
@@ -66,7 +66,7 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   if (process.env.MYAPP_DEBUG !== "true") {
     error.stack = "";
   } else {
-    error.stack = res.get("url") + "\n" + error.stack;
+    error.stack = `operation: ${res.get("operation")}\n` + error.stack;
   }
   res.status(500).json(Result.fromError(error));
 });

@@ -1,6 +1,6 @@
 enum Status {
-  OK = 0,
-  ERROR = 1,
+  SUCCESS = "success",
+  ERROR = "error",
 }
 
 export default Status;

@@ -12,7 +12,9 @@ const find: RequestHandler = async (req, res, next) => {
     console.log("userId :>> ", userId);
     const user = await userService.findOne(userId);
     const userContent = UserUtils.fromUser(user);
-    return res.status(200).json(Result.fromData(userContent));
+    return res
+      .status(200)
+      .json(Result.fromData(userContent, `User id = ${userId} found.`));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -40,7 +42,9 @@ const update: RequestHandler = async (req, res, next) => {
     }
     const updatedUser = await userService.update(userId, input);
     const userContent = UserUtils.fromUser(updatedUser);
-    return res.status(200).json(Result.fromData(userContent));
+    return res
+      .status(200)
+      .json(Result.fromData(userContent, `User id = ${userId} updated.`));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -56,7 +60,9 @@ const disable: RequestHandler = async (req, res, next) => {
     const userId = parseInt(res.get("userId"));
     console.log("userId :>> ", userId);
     const user = await userService.disable(userId);
-    return res.status(200).json(Result.fromData(user));
+    return res
+      .status(200)
+      .json(Result.fromData(user, `User id = ${userId} disabled.`));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,

@@ -4,6 +4,7 @@ import setupDb from "./setupDb";
 import config from "./config";
 const { BASE_URL } = config;
 import fixture from "./fixture";
+import Status from "../model/Status";
 const { user1, user2, user3, user4, user5, user6 } = fixture;
 
 beforeAll(async () => {
@@ -17,7 +18,7 @@ test("/auth/register: user6 is created successfully", async () => {
     .send(user6Body);
   try {
     expect(response.status).toBe(201);
-    expect(response.body.status).toBe(0);
+    expect(response.body.status).toBe(Status.SUCCESS);
     expect(response.body.data.username).toBe(user6.userContent.username);
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
@@ -32,7 +33,7 @@ test("/auth/login: user1 is able to log in", async () => {
   });
   try {
     expect(response.status).toBe(201);
-    expect(response.body.status).toBe(0);
+    expect(response.body.status).toBe(Status.SUCCESS);
     expect(response.body.data.user.username).toBe("user1");
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
@@ -47,7 +48,7 @@ test("/auth/login: user1 is unable to log in using wrong password", async () => 
   });
   try {
     expect(response.status).toBe(500);
-    expect(response.body.status).toBe(1);
+    expect(response.body.status).toBe(Status.ERROR);
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
     throw error;
@@ -61,7 +62,7 @@ test("/auth/login: non existing userXXX is unable to log in", async () => {
   });
   try {
     expect(response.status).toBe(500);
-    expect(response.body.status).toBe(1);
+    expect(response.body.status).toBe(Status.ERROR);
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
     throw error;
@@ -74,8 +75,8 @@ test("/auth/logout: user6 is able to log out", async () => {
     .send();
   try {
     expect(response.status).toBe(200);
-    expect(response.body.status).toBe(0);
-    expect(response.body.data.message).toBe("Token revoked successfully.");
+    expect(response.body.status).toBe(Status.SUCCESS);
+    expect(response.body.message).toBe("Token successfully revoked.");
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
     throw error;
@@ -91,8 +92,8 @@ test("/auth/token: token is revoked", async () => {
     .send();
   try {
     expect(response.status).toBe(200);
-    expect(response.body.status).toBe(0);
-    expect(response.body.data.isRevoked).toBe(true);
+    expect(response.body.status).toBe(Status.SUCCESS);
+    expect(response.body.data).toBe(true);
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
     throw error;
@@ -103,8 +104,8 @@ test("/auth/isRevoked: token is not revoked", async () => {
   const response = await request(BASE_URL).get(`/auth/isRevoked/1234`).send();
   try {
     expect(response.status).toBe(200);
-    expect(response.body.status).toBe(0);
-    expect(response.body.data.isRevoked).toBe(false);
+    expect(response.body.status).toBe(Status.SUCCESS);
+    expect(response.body.data).toBe(false);
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
     throw error;

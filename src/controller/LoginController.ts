@@ -27,7 +27,9 @@ const register: RequestHandler = async (req, res, next) => {
     input = { ...input, role: Role.USER, enabled: true };
     const createdUser = await UserService.create(input);
     const userContent = UserUtils.fromUser(createdUser);
-    return res.status(201).json(Result.fromData(userContent));
+    return res
+      .status(201)
+      .json(Result.fromData(userContent, "User successfully registered."));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -43,7 +45,9 @@ const login: RequestHandler = async (req, res, next) => {
     const { username, password } = req.body;
     const loginData = await UserService.login(username, password);
     console.debug("loginData = ", loginData);
-    return res.status(201).json(Result.fromData(loginData));
+    return res
+      .status(201)
+      .json(Result.fromData(loginData, "User successfully logged in."));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -59,7 +63,9 @@ const sign: RequestHandler = async (req, res, next) => {
     console.debug("req.body = ", req.body);
     const token = await UserService.sign(req.body);
     console.debug("token = ", token);
-    return res.status(200).json(Result.fromData(token));
+    return res
+      .status(200)
+      .json(Result.fromData(token, "Content successfully signed."));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -74,7 +80,9 @@ const verify: RequestHandler = async (req, res, next) => {
   try {
     const jwtToken = req.params.jwtToken;
     const userContent = await UserService.verify(jwtToken);
-    return res.status(200).json(Result.fromData(userContent));
+    return res
+      .status(200)
+      .json(Result.fromData(userContent, "Token successfully verified."));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -91,7 +99,7 @@ const logout: RequestHandler = async (req, res, next) => {
     await TokenBlacklistService.revoke(jwtToken);
     return res
       .status(200)
-      .json(Result.fromData({ message: "Token revoked successfully." }));
+      .json(Result.fromData(jwtToken, "Token successfully revoked."));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -106,7 +114,11 @@ const isRevoked: RequestHandler = async (req, res, next) => {
   try {
     const jwtToken = req.params.jwtToken;
     const isRevoked = await TokenBlacklistService.isRevoked(jwtToken);
-    return res.status(200).json(Result.fromData({ isRevoked }));
+    return res
+      .status(200)
+      .json(
+        Result.fromData(isRevoked, "Token isRevoked successfully invoked.")
+      );
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -122,7 +134,7 @@ const purgeOldTokens: RequestHandler = async (req, res, next) => {
     await TokenBlacklistService.purgeOldTokens();
     return res
       .status(200)
-      .json(Result.fromData({ message: "Old tokens purged." }));
+      .json(Result.fromData(null, "Old tokens successfully purged."));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,

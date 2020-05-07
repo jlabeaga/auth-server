@@ -11,7 +11,9 @@ const findAll: RequestHandler = async (req, res, next) => {
     const users = (await userService.findAll()).map((user) =>
       UserUtils.fromUser(user)
     );
-    return res.status(200).json(Result.fromData(users));
+    return res
+      .status(200)
+      .json(Result.fromData(users, "Users successfully listed."));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -27,7 +29,9 @@ const findOne: RequestHandler<{ id: string }> = async (req, res, next) => {
     const id = req.params.id;
     const user = await userService.findOne(parseInt(id));
     const userContent = UserUtils.fromUser(user);
-    return res.status(200).json(Result.fromData(userContent));
+    return res
+      .status(200)
+      .json(Result.fromData(userContent, `User id = ${id} found.`));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -42,7 +46,14 @@ const create: RequestHandler = async (req, res, next) => {
   try {
     const createdUser = await userService.create(req.body);
     const userContent = UserUtils.fromUser(createdUser);
-    return res.status(201).json(Result.fromData(userContent));
+    return res
+      .status(201)
+      .json(
+        Result.fromData(
+          userContent,
+          `User id = ${userContent.id} successfully created.`
+        )
+      );
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -58,7 +69,11 @@ const update: RequestHandler<{ id: string }> = async (req, res, next) => {
     const id = parseInt(req.params.id);
     const updatedUser = await userService.update(id, req.body);
     const userContent = UserUtils.fromUser(updatedUser);
-    return res.status(200).json(Result.fromData(userContent));
+    return res
+      .status(200)
+      .json(
+        Result.fromData(userContent, `User id = ${id} successfully updated.`)
+      );
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -73,7 +88,9 @@ const remove: RequestHandler<{ id: string }> = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await userService.remove(parseInt(id));
-    return res.status(200).json(Result.fromData(`User id = ${id} removed.`));
+    return res
+      .status(200)
+      .json(Result.fromData(null, `User id = ${id} succesfully removed.`));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,

@@ -12,7 +12,7 @@ const initDb: RequestHandler = (req, res, next) => {
     initializeDb();
     return res
       .status(200)
-      .json(new Result(Status.OK, { message: "DB successfully initialized." }));
+      .json(Result.fromData(null, "DB successfully initialized."));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,

@@ -4,6 +4,7 @@ import setupDb from "./setupDb";
 import config from "./config";
 const { BASE_URL } = config;
 import fixture from "./fixture";
+import Status from "../model/Status";
 const { user1, user2, user3, user4, user5, user6 } = fixture;
 
 beforeEach(async () => {
@@ -17,7 +18,7 @@ test("/admin: all users are displayed", async () => {
     .send();
   try {
     expect(response.status).toBe(200);
-    expect(response.body.status).toBe(0);
+    expect(response.body.status).toBe(Status.SUCCESS);
     expect(response.body.data).toHaveLength(5);
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
@@ -32,7 +33,7 @@ test("/admin/1: user with id = 1 is found", async () => {
     .send();
   try {
     expect(response.status).toBe(200);
-    expect(response.body.status).toBe(0);
+    expect(response.body.status).toBe(Status.SUCCESS);
     expect(response.body.data.username).toBe("user1");
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
@@ -48,7 +49,7 @@ test("/admin: user6 is created successfully", async () => {
     .send(user6Body);
   try {
     expect(response.status).toBe(201);
-    expect(response.body.status).toBe(0);
+    expect(response.body.status).toBe(Status.SUCCESS);
     expect(response.body.data.username).toBe("user6");
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
@@ -69,7 +70,7 @@ test("/admin: user with already existing username can not be crea/admin: ted", a
     });
   try {
     expect(response.status).toBe(500);
-    expect(response.body.status).toBe(1);
+    expect(response.body.status).toBe(Status.ERROR);
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
     throw error;
