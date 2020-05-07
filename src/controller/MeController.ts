@@ -5,22 +5,6 @@ import UserUtils from "../model/UserUtils";
 import Result from "../model/Result";
 import TicketErrorUtils from "../model/TicketErrorUtils";
 
-// const findAll: RequestHandler = async (req, res, next) => {
-//   console.debug("invoked findAll()");
-//   try {
-//     const users = (await userService.findAll()).map((user) =>
-//       UserUtils.fromUser(user)
-//     );
-//     return res.status(200).json(Result.fromData(users));
-//   } catch (error) {
-//     const ticketError = TicketErrorUtils.createTicketAndLog(
-//       error,
-//       "Error when listing users at UserController"
-//     );
-//     return next(ticketError);
-//   }
-// };
-
 const find: RequestHandler = async (req, res, next) => {
   console.debug("invoked find()");
   try {
@@ -43,7 +27,18 @@ const update: RequestHandler = async (req, res, next) => {
   try {
     const userId = parseInt(res.get("userId"));
     console.log("userId :>> ", userId);
-    const updatedUser = await userService.update(userId, req.body);
+    const { username, password, email } = req.body;
+    let input = {};
+    if (username) {
+      input = { ...input, username };
+    }
+    if (password) {
+      input = { ...input, password };
+    }
+    if (email) {
+      input = { ...input, email };
+    }
+    const updatedUser = await userService.update(userId, input);
     const userContent = UserUtils.fromUser(updatedUser);
     return res.status(200).json(Result.fromData(userContent));
   } catch (error) {
@@ -55,15 +50,13 @@ const update: RequestHandler = async (req, res, next) => {
   }
 };
 
-const remove: RequestHandler = async (req, res, next) => {
-  console.debug("invoked remove()");
+const disable: RequestHandler = async (req, res, next) => {
+  console.debug("invoked disable()");
   try {
     const userId = parseInt(res.get("userId"));
     console.log("userId :>> ", userId);
-    const user = await userService.remove(userId);
-    return res
-      .status(200)
-      .json(Result.fromData(`User id = ${userId} removed.`));
+    const user = await userService.disable(userId);
+    return res.status(200).json(Result.fromData(user));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,
@@ -76,5 +69,5 @@ const remove: RequestHandler = async (req, res, next) => {
 export default {
   find,
   update,
-  remove,
+  disable,
 };

@@ -4,6 +4,38 @@ import UserService from "../service/UserService";
 import Result from "../model/Result";
 import TicketErrorUtils from "../model/TicketErrorUtils";
 import TokenBlacklistService from "../service/TokenBlacklistService";
+import UserUtils from "../model/UserUtils";
+import Role from "../model/Role";
+
+const register: RequestHandler = async (req, res, next) => {
+  console.debug("invoked register()");
+  try {
+    const { id, username, password, email } = req.body;
+    let input = {};
+    if (id) {
+      input = { ...input, id };
+    }
+    if (username) {
+      input = { ...input, username };
+    }
+    if (password) {
+      input = { ...input, password };
+    }
+    if (email) {
+      input = { ...input, email };
+    }
+    input = { ...input, role: Role.USER, enabled: true };
+    const createdUser = await UserService.create(input);
+    const userContent = UserUtils.fromUser(createdUser);
+    return res.status(201).json(Result.fromData(userContent));
+  } catch (error) {
+    const ticketError = TicketErrorUtils.createTicketAndLog(
+      error,
+      "Error when creating user at LoginController"
+    );
+    return next(ticketError);
+  }
+};
 
 const login: RequestHandler = async (req, res, next) => {
   console.debug("invoked login()");
@@ -101,6 +133,7 @@ const purgeOldTokens: RequestHandler = async (req, res, next) => {
 };
 
 export default {
+  register,
   login,
   sign,
   verify,

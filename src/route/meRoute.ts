@@ -8,6 +8,6 @@ router.get("/", MeController.find);
 
 router.patch("/", MeController.update);
 
-router.delete("/", MeController.remove);
+router.delete("/", MeController.disable);
 
 export default router;

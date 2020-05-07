@@ -67,11 +67,6 @@ async function update(id: number, userBody: any): Promise<User> {
   await (await getTypeormConnection()).manager.update(User, id, userBody);
   const updatedUser = findOne(id);
   return updatedUser;
-  //       try {
-  // } catch (err) {
-  //   console.log("Error when updating user at UserService: ");
-  //   Promise.reject(err);
-  // }
 }
 
 async function remove(id: number): Promise<void> {
@@ -81,6 +76,18 @@ async function remove(id: number): Promise<void> {
     .from(User)
     .where("id = :id", { id: id })
     .execute();
+}
+
+async function disable(id: number): Promise<User> {
+  const connection = await getTypeormConnection();
+  await connection
+    .createQueryBuilder()
+    .update(User)
+    .set({ enabled: false })
+    .where("id = :id", { id: id })
+    .execute();
+  const user = await findOne(id);
+  return user;
 }
 
 async function login(username: string, password: string): Promise<LoginData> {
@@ -141,4 +148,5 @@ export default {
   create,
   update,
   remove,
+  disable,
 };

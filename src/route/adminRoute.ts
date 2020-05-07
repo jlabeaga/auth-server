@@ -7,6 +7,8 @@ router.get("/:id", UserController.findOne);
 
 router.get("/", UserController.findAll);
 
+router.post("/", UserController.create);
+
 router.patch("/:id", UserController.update);
 
 router.delete("/:id", UserController.remove);

@@ -4,13 +4,12 @@ import { json } from "body-parser";
 import "reflect-metadata";
 
 import testRoute from "./route/testRoute";
-import userRoute from "./route/userRoute";
+import adminRoute from "./route/adminRoute";
 import meRoute from "./route/meRoute";
 import loginRoute from "./route/authRoute";
 import authMiddleware from "./middleware/authMiddleware";
 import Result from "./model/Result";
 import adminMiddleware from "./middleware/adminMiddleware";
-import UserController from "./controller/UserController";
 
 const app = express();
 
@@ -46,9 +45,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use("/auth", loginRoute);
 
-app.post("/user", UserController.create);
-
-app.use("/user", authMiddleware, adminMiddleware, userRoute);
+app.use("/admin", authMiddleware, adminMiddleware, adminRoute);
 
 app.use("/me", authMiddleware, meRoute);
 

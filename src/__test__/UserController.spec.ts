@@ -10,24 +10,24 @@ beforeEach(async () => {
   await setupDb();
 });
 
-test("all users are displayed", async () => {
+test("/admin: all users are displayed", async () => {
   const response = await request(BASE_URL)
-    .get("/user")
+    .get("/admin")
     .set("Authorization", `Bearer ${user1.token}`)
     .send();
   try {
     expect(response.status).toBe(200);
     expect(response.body.status).toBe(0);
-    expect(response.body.data).toHaveLength(4);
+    expect(response.body.data).toHaveLength(5);
   } catch (error) {
     console.log("ERROR_FINDME: response.body :>> ", response.body);
     throw error;
   }
 });
 
-test("user with id = 1 is found", async () => {
+test("/admin/1: user with id = 1 is found", async () => {
   const response = await request(BASE_URL)
-    .get("/user/1")
+    .get("/admin/1")
     .set("Authorization", `Bearer ${user1.token}`)
     .send();
   try {
@@ -40,9 +40,12 @@ test("user with id = 1 is found", async () => {
   }
 });
 
-test("user6 is created successfully", async () => {
+test("/admin: user6 is created successfully", async () => {
   let user6Body = { ...user6.userContent, password: "user6" };
-  const response = await request(BASE_URL).post("/user").send(user6Body);
+  const response = await request(BASE_URL)
+    .post("/admin")
+    .set("Authorization", `Bearer ${user1.token}`)
+    .send(user6Body);
   try {
     expect(response.status).toBe(201);
     expect(response.body.status).toBe(0);
@@ -53,9 +56,9 @@ test("user6 is created successfully", async () => {
   }
 });
 
-test("user with already existing username can not be created", async () => {
+test("/admin: user with already existing username can not be crea/admin: ted", async () => {
   const response = await request(BASE_URL)
-    .post("/user")
+    .post("/admin")
     .set("Authorization", `Bearer ${user1.token}`)
     .send({
       username: "user2",

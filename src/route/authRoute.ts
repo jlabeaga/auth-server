@@ -3,6 +3,8 @@ import LoginController from "../controller/LoginController";
 
 const router = Router();
 
+router.post("/register", LoginController.register);
+
 router.post("/login", LoginController.login);
 
 router.post("/logout/:jwtToken", LoginController.logout);

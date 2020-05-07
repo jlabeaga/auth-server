@@ -10,7 +10,22 @@ beforeAll(async () => {
   await setupDb();
 });
 
-test("user1 is able to log in", async () => {
+test("/auth/register: user6 is created successfully", async () => {
+  let user6Body = { ...user6.userContent, password: "user6" };
+  const response = await request(BASE_URL)
+    .post("/auth/register")
+    .send(user6Body);
+  try {
+    expect(response.status).toBe(201);
+    expect(response.body.status).toBe(0);
+    expect(response.body.data.username).toBe(user6.userContent.username);
+  } catch (error) {
+    console.log("ERROR_FINDME: response.body :>> ", response.body);
+    throw error;
+  }
+});
+
+test("/auth/login: user1 is able to log in", async () => {
   const response = await request(BASE_URL).post("/auth/login").send({
     username: user1.userContent.username,
     password: user1.password,
@@ -25,7 +40,7 @@ test("user1 is able to log in", async () => {
   }
 });
 
-test("user1 is unable to log in using wrong password", async () => {
+test("/auth/login: user1 is unable to log in using wrong password", async () => {
   const response = await request(BASE_URL).post("/auth/login").send({
     username: user1.userContent.username,
     password: "XXXX",
@@ -39,7 +54,7 @@ test("user1 is unable to log in using wrong password", async () => {
   }
 });
 
-test("non existing userXXX is unable to log in", async () => {
+test("/auth/login: non existing userXXX is unable to log in", async () => {
   const response = await request(BASE_URL).post("/auth/login").send({
     username: "userXXXX",
     password: "XXXX",
@@ -53,7 +68,7 @@ test("non existing userXXX is unable to log in", async () => {
   }
 });
 
-test("user6 is able to log out", async () => {
+test("/auth/logout: user6 is able to log out", async () => {
   const response = await request(BASE_URL)
     .post(`/auth/logout/${user6.token}`)
     .send();
@@ -67,7 +82,7 @@ test("user6 is able to log out", async () => {
   }
 });
 
-test("token is revoked", async () => {
+test("/auth/token: token is revoked", async () => {
   const precondition = await request(BASE_URL)
     .post(`/auth/logout/${user6.token}`)
     .send();
@@ -84,7 +99,7 @@ test("token is revoked", async () => {
   }
 });
 
-test("token is not revoked", async () => {
+test("/auth/isRevoked: token is not revoked", async () => {
   const response = await request(BASE_URL).get(`/auth/isRevoked/1234`).send();
   try {
     expect(response.status).toBe(200);
