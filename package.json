@@ -7,7 +7,12 @@
     "start": "setenv.bat && node ./dist/server.js",
     "dev": "setenv.bat && nodemon ./dist/server.js --ignore ./dist/db/ --ignore ./dist/__test__/",
     "test": "jest --runInBand --detectOpenHandles",
-    "initDb": "node ./dist/db/initDbCmd.js"
+    "initDb": "node ./dist/db/initDbCmd.js",
+    "copy-assets": "xcopy .\\src\\assets\\*.* .\\dist\\assets\\*.* /s /y",
+    "pretsc-watch": "npm run copy-assets",
+    "tsc-watch": "tsc --watch",
+    "prebuild": "npm run copy-assets",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
@@ -15,13 +20,16 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.19.0",
     "@types/jsonwebtoken": "^8.3.9",
+    "@types/swagger-ui-express": "^4.1.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "class-validator": "^0.12.2",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "reflect-metadata": "^0.1.13",
+    "require-yaml": "0.0.1",
     "sqlite3": "^4.2.0",
+    "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.24"
   },
   "devDependencies": {
