@@ -2,6 +2,9 @@ import express from "express";
 import { Request, Response, NextFunction } from "express";
 import { json } from "body-parser";
 import "reflect-metadata";
+const swaggerUi = require("swagger-ui-express");
+require("require-yaml");
+const swaggerDocument = require("./assets/swagger.yaml");
 
 import testRoute from "./route/testRoute";
 import adminRoute from "./route/adminRoute";
@@ -43,13 +46,15 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-app.use("/auth", loginRoute);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use("/admin", authMiddleware, adminMiddleware, adminRoute);
+app.use("/api/auth", loginRoute);
 
-app.use("/me", authMiddleware, meRoute);
+app.use("/api/admin", authMiddleware, adminMiddleware, adminRoute);
 
-app.use("/test", authMiddleware, adminMiddleware, testRoute);
+app.use("/api/me", authMiddleware, meRoute);
+
+app.use("/api/test", authMiddleware, adminMiddleware, testRoute);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res

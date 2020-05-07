@@ -37,7 +37,7 @@ const findOne: RequestHandler<{ id: string }> = async (req, res, next) => {
       error,
       "Error when finding user at UserController"
     );
-    return next(ticketError);
+    return res.status(404).json(Result.fromError(ticketError));
   }
 };
 

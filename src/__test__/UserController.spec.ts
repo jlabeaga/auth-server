@@ -11,9 +11,9 @@ beforeEach(async () => {
   await setupDb();
 });
 
-test("/admin: all users are displayed", async () => {
+test("/api/admin: all users are displayed", async () => {
   const response = await request(BASE_URL)
-    .get("/admin")
+    .get("/api/admin")
     .set("Authorization", `Bearer ${user1.token}`)
     .send();
   try {
@@ -26,9 +26,9 @@ test("/admin: all users are displayed", async () => {
   }
 });
 
-test("/admin/1: user with id = 1 is found", async () => {
+test("/api/admin/1: user with id = 1 is found", async () => {
   const response = await request(BASE_URL)
-    .get("/admin/1")
+    .get("/api/admin/1")
     .set("Authorization", `Bearer ${user1.token}`)
     .send();
   try {
@@ -41,10 +41,10 @@ test("/admin/1: user with id = 1 is found", async () => {
   }
 });
 
-test("/admin: user6 is created successfully", async () => {
+test("/api/admin: user6 is created successfully", async () => {
   let user6Body = { ...user6.userContent, password: "user6" };
   const response = await request(BASE_URL)
-    .post("/admin")
+    .post("/api/admin")
     .set("Authorization", `Bearer ${user1.token}`)
     .send(user6Body);
   try {
@@ -57,9 +57,9 @@ test("/admin: user6 is created successfully", async () => {
   }
 });
 
-test("/admin: user with already existing username can not be crea/admin: ted", async () => {
+test("/api/admin: user with already existing username can not be created", async () => {
   const response = await request(BASE_URL)
-    .post("/admin")
+    .post("/api/admin")
     .set("Authorization", `Bearer ${user1.token}`)
     .send({
       username: "user2",

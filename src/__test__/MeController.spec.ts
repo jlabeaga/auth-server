@@ -11,9 +11,9 @@ beforeEach(async () => {
   await setupDb();
 });
 
-test("/me: user profile is found", async () => {
+test("/api/me: user profile is found", async () => {
   const response = await request(BASE_URL)
-    .get("/me")
+    .get("/api/me")
     .set("Authorization", `Bearer ${user2.token}`)
     .send();
   try {
@@ -26,9 +26,9 @@ test("/me: user profile is found", async () => {
   }
 });
 
-test("/me: user profile is modified", async () => {
+test("/api/me: user profile is modified", async () => {
   const response = await request(BASE_URL)
-    .patch("/me")
+    .patch("/api/me")
     .set("Authorization", `Bearer ${user2.token}`)
     .send({
       email: "newemail@hotmail.com",
@@ -43,9 +43,9 @@ test("/me: user profile is modified", async () => {
   }
 });
 
-test("/me: user is disabled", async () => {
+test("/api/me: user is disabled", async () => {
   const response = await request(BASE_URL)
-    .delete("/me")
+    .delete("/api/me")
     .set("Authorization", `Bearer ${user2.token}`)
     .send();
   try {
