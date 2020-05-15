@@ -28,6 +28,9 @@ const findOne: RequestHandler<{ id: string }> = async (req, res, next) => {
   try {
     const id = req.params.id;
     const user = await userService.findOne(parseInt(id));
+    if (!user) {
+      return res.status(404).json(Result.fromData("User not found."));
+    }
     const userContent = UserUtils.fromUser(user);
     return res
       .status(200)
@@ -68,6 +71,9 @@ const update: RequestHandler<{ id: string }> = async (req, res, next) => {
   try {
     const id = parseInt(req.params.id);
     const updatedUser = await userService.update(id, req.body);
+    if (!updatedUser) {
+      return res.status(404).json(Result.fromErrorMessage("User not found."));
+    }
     const userContent = UserUtils.fromUser(updatedUser);
     return res
       .status(200)
@@ -90,7 +96,7 @@ const remove: RequestHandler<{ id: string }> = async (req, res, next) => {
     const user = await userService.remove(parseInt(id));
     return res
       .status(200)
-      .json(Result.fromData(null, `User id = ${id} succesfully removed.`));
+      .json(Result.fromData(null, `User succesfully deleted.`));
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,

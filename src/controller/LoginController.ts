@@ -10,21 +10,7 @@ import Role from "../model/Role";
 const register: RequestHandler = async (req, res, next) => {
   console.debug("invoked register()");
   try {
-    const { id, username, password, email } = req.body;
-    let input = {};
-    if (id) {
-      input = { ...input, id };
-    }
-    if (username) {
-      input = { ...input, username };
-    }
-    if (password) {
-      input = { ...input, password };
-    }
-    if (email) {
-      input = { ...input, email };
-    }
-    input = { ...input, role: Role.USER, enabled: true };
+    const input = { ...req.body, role: Role.USER, enabled: true };
     const createdUser = await UserService.create(input);
     const userContent = UserUtils.fromUser(createdUser);
     return res
@@ -45,9 +31,13 @@ const login: RequestHandler = async (req, res, next) => {
     const { username, password } = req.body;
     const loginData = await UserService.login(username, password);
     console.debug("loginData = ", loginData);
-    return res
-      .status(201)
-      .json(Result.fromData(loginData, "User successfully logged in."));
+    if (loginData.user.enabled) {
+      return res
+        .status(201)
+        .json(Result.fromData(loginData, "User successfully logged in."));
+    } else {
+      return res.status(400).json(Result.fromErrorMessage("User is disabled."));
+    }
   } catch (error) {
     const ticketError = TicketErrorUtils.createTicketAndLog(
       error,

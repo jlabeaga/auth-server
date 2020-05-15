@@ -34,13 +34,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.use(json());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
-  const { body, query, params, header, url, method } = req;
+  const { body, query, params, headers, url, method } = req;
   if (url) console.log("url = ", url);
   if (method) console.log("method = ", method);
   if (params) console.log("params = ", params);
   if (body) console.log("body = ", body);
-  // if (header("authorization"))
-  //   console.log('header("authorization") = ', header("authorization"));
+  // if (headers) console.log("headers = ", headers);
   // if (query) console.log("query = ", query);
   res.set("operation", `${method} ${url} ${params}`);
   next();

@@ -6,11 +6,14 @@ import Result from "../model/Result";
 import TicketErrorUtils from "../model/TicketErrorUtils";
 
 const find: RequestHandler = async (req, res, next) => {
-  console.debug("invoked find()");
+  console.debug("invoked Me.find()");
   try {
     const userId = parseInt(res.get("userId"));
     console.log("userId :>> ", userId);
     const user = await userService.findOne(userId);
+    if (!user) {
+      return res.status(404).json(Result.fromData("User not found."));
+    }
     const userContent = UserUtils.fromUser(user);
     return res
       .status(200)
@@ -25,7 +28,7 @@ const find: RequestHandler = async (req, res, next) => {
 };
 
 const update: RequestHandler = async (req, res, next) => {
-  console.debug("invoked update()");
+  console.debug("invoked Me.update()");
   try {
     const userId = parseInt(res.get("userId"));
     console.log("userId :>> ", userId);
@@ -41,6 +44,9 @@ const update: RequestHandler = async (req, res, next) => {
       input = { ...input, email };
     }
     const updatedUser = await userService.update(userId, input);
+    if (!updatedUser) {
+      return res.status(404).json(Result.fromData("User not found."));
+    }
     const userContent = UserUtils.fromUser(updatedUser);
     return res
       .status(200)
@@ -55,7 +61,7 @@ const update: RequestHandler = async (req, res, next) => {
 };
 
 const disable: RequestHandler = async (req, res, next) => {
-  console.debug("invoked disable()");
+  console.debug("invoked Me.disable()");
   try {
     const userId = parseInt(res.get("userId"));
     console.log("userId :>> ", userId);

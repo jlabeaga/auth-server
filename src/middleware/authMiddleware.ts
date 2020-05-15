@@ -11,6 +11,10 @@ const authMiddleware: RequestHandler = async (req, res, next) => {
     if (process.env.MYAPP_DISABLE_CHECK_AUTH === "true") {
       return next();
     }
+    if (req.method === "OPTIONS") {
+      console.log("method OPTIONS requested");
+      return next();
+    }
     const header = req.headers.authorization as string;
     const token = header.split(" ")[1];
     if (!token) {
@@ -19,8 +23,11 @@ const authMiddleware: RequestHandler = async (req, res, next) => {
     const userContent = EncryptService.verifyJwtToken(token) as UserContent;
     console.log("userContent :>> ", userContent);
     const user = await UserService.findOne(userContent.id);
+    if (!user) {
+      throw new Error(`User can not be authenticated because is not found.`);
+    }
     if (!user.enabled) {
-      throw new Error(`User is disabled`);
+      throw new Error(`User can not be authenticated because is disabled.`);
     }
     res.set("userId", "" + userContent.id);
     return next();
